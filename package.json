@@ -47,9 +47,10 @@
     "test": "npm run clean && npm run build && cross-env NODE_ENV=test ./node_modules/mocha/bin/mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm test -- --watch",
     "start": "cross-env NODE_ENV=development node ./src/server",
-    "start:prod": "npm run clean && npm run build && cross-env NODE_ENV=production node ./build/server.js",
+    "start:prod": "npm run clean && npm run build && cross-env NODE_ENV=production forever start -l forever.log -o out.log -e err.log ./build/server.js",
+    "stop:prod": "forever stop ./build/server.js",
     "build": "webpack --config ./src/tools/webpack.client.prod.js && webpack --config ./src/tools/webpack.server.prod.js",
-    "clean": "rm -rf build"
+    "clean": "rm -f *.log && rm -f ~/.forever/forever.log && rm -rf build"
   },
   "repository": {
     "type": "git",
