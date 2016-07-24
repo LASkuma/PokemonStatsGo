@@ -24,7 +24,7 @@ module.exports = {
     path: CLIENT_OUTPUT
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename:'vendor_[hash].js', minChunks: 2 }),
     new AssetsPlugin({ filename: 'assets.json' }),

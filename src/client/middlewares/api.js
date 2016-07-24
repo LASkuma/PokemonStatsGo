@@ -26,7 +26,7 @@ export default (store) => (next) => (action) => {
     return next(action)
   }
 
-  const { endpoint, types } = callAPI
+  const { types, endpoint, method, body } = callAPI
 
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
@@ -51,10 +51,10 @@ export default (store) => (next) => (action) => {
     endpoint,
     method: 'GET'
   }
-  if (typeof action.method !== 'undefined') {
-    if (action.method === 'POST') {
+  if (typeof method !== 'undefined') {
+    if (method === 'POST') {
       request.method = 'POST'
-      request.body = action.body
+      request.body = body
     } else {
       throw new Error('Unsupported method')
     }

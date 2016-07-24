@@ -26,12 +26,14 @@
     "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
+    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-plugin-transform-react-constant-elements": "^6.9.1",
     "babel-plugin-transform-react-inline-elements": "^6.8.0",
     "babel-polyfill": "^6.9.1",
     "babel-preset-es2015-webpack": "^6.4.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
+    "json-loader": "^0.5.4",
     "redux-devtools": "^3.3.1",
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.0.11",
@@ -46,7 +48,7 @@
     "test:watch": "npm test -- --watch",
     "start": "cross-env NODE_ENV=development node ./src/server",
     "start:prod": "npm run clean && npm run build && cross-env NODE_ENV=production node ./build/server.js",
-    "build": "webpack --config ./tools/webpack.client.prod.js && webpack --config ./tools/webpack.server.prod.js",
+    "build": "webpack --config ./src/tools/webpack.client.prod.js && webpack --config ./src/tools/webpack.server.prod.js",
     "clean": "rm -rf build"
   },
   "repository": {

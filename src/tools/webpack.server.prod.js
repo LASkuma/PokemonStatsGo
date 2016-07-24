@@ -47,8 +47,7 @@ module.exports = {
   },
   plugins: [
     new webpack.BannerPlugin(
-        'require("source-map-support").install();',
-        { raw: true, entryOnly: false }
+        { raw: true, entryOnly: false, banner: 'require("source-map-support").install();' }
     ),
     new webpack.IgnorePlugin(/\.(css|less|scss|svg|png|jpe?g|png)$/),
     new webpack.optimize.UglifyJsPlugin({
