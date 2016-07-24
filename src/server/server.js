@@ -49,7 +49,6 @@ if (__PROD__ || __TEST__) {
 }
 
 server.post('/stats', (req, res) => {
-  console.log(req.body)
   let username = req.body.username
   let password = req.body.password
 
