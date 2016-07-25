@@ -9,6 +9,7 @@ const PokemonRow = ({ id, pokemon }) => {
       <td>{pokemon.indAttack}</td>
       <td>{pokemon.indDefense}</td>
       <td>{pokemon.indStamina}</td>
+      <td>{pokemon.indAttack + pokemon.indDefense + pokemon.indStamina}</td>
     </tr>
   )
 }
