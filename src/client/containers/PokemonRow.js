@@ -5,6 +5,7 @@ const PokemonRow = ({ id, pokemon }) => {
   return (
     <tr>
       <td><img src={pokemon.info.img} /></td>
+      <td>{pokemon.info.name}</td>
       <td>{pokemon.cp}</td>
       <td>{pokemon.indAttack}</td>
       <td>{pokemon.indDefense}</td>

@@ -3,7 +3,7 @@ import * as ActionTypes from '../actions'
 
 function list (state = {}, action) {
   if (action.type === ActionTypes.STATS_LOAD_SUCCESS) {
-    return Object.assign({}, state, action.response)
+    return Object.assign({}, action.response)
   }
 
   return state

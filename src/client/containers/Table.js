@@ -4,10 +4,11 @@ import PokemonRow from './PokemonRow'
 
 const Table = ({ ids }) => {
   return (
-    <table>
+    <table style={{textAlign: 'center'}}>
       <thead>
         <tr>
           <th>Icon</th>
+          <th>Name</th>
           <th>CP</th>
           <th>Individual Attack</th>
           <th>Individual Defense</th>
