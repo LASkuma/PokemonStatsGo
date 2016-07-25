@@ -25,9 +25,16 @@ Table.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
+const sortKeysByPokemonId = (list, pokemons) => {
+  const compare = (a, b) => {
+    return parseInt(pokemons[a].info.id) - parseInt(pokemons[b].info.id)
+  }
+  return list.sort(compare)
+}
+
 const mapStateToProps = (state) => {
   return {
-    ids: Object.keys(state.pokemons.list)
+    ids: sortKeysByPokemonId(Object.keys(state.pokemons.list), state.pokemons.list)
   }
 }
 
