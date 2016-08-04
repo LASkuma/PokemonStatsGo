@@ -9,7 +9,7 @@ const Table = ({ headers, Row, ids }) => {
         </tr>
       </thead>
       <tbody>
-        {ids.map(id => <Row id={id} key={id} />)}
+        {ids.map((id, ind) => <Row id={id} key={id} index={ind} />)}
       </tbody>
     </table>
   )

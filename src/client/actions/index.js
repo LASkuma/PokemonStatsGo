@@ -1,3 +1,4 @@
+import pokemonInfo from '../assets/pokemonInfo.json'
 import { CALL_API } from '../middlewares/api'
 
 export const STATS_LOAD_REQUEST = 'STATS_LOAD_REQUEST'
@@ -12,5 +13,14 @@ export function getStats (username, password) {
       method: 'POST',
       body: { username, password }
     }
+  }
+}
+
+export const LOAD_POKEMON_INFO = 'LOAD_POKEMON_INFO'
+
+export function loadPokemonInfo () {
+  return {
+    type: LOAD_POKEMON_INFO,
+    payload: pokemonInfo
   }
 }
