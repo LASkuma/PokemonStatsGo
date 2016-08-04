@@ -15,6 +15,7 @@ module.exports = {
     vendor: [
       'react',
       'react-dom',
+      'react-router',
       'redux',
       'react-redux',
       'axios'

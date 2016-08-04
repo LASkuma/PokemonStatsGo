@@ -1,26 +1,11 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import Table from '../components/Table'
 import PokemonRow from './PokemonRow'
 
-const Table = ({ ids }) => {
-  return (
-    <table style={{textAlign: 'center'}}>
-      <thead>
-        <tr>
-          <th>Icon</th>
-          <th>Name</th>
-          <th>CP</th>
-          <th>Individual Attack</th>
-          <th>Individual Defense</th>
-          <th>Individual Stamina</th>
-          <th>Individual Sum</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ids.map(id => <PokemonRow id={id} key={id} />)}
-      </tbody>
-    </table>
-  )
+const PokemonStatsTable = ({ ids }) => {
+  const headers = ['Icon', 'Name', 'CP', 'IV Attack', 'IV Defense', 'IV Stamina', 'IV Sum']
+  return <Table headers={headers} Row={PokemonRow} ids={ids} />
 }
 
 Table.propTypes = {
@@ -49,4 +34,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Table)
+export default connect(mapStateToProps)(PokemonStatsTable)

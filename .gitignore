@@ -2,3 +2,4 @@ node_modules
 *.log
 assets.json
 build
+.DS_Store

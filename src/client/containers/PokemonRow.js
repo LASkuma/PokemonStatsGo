@@ -1,18 +1,19 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import Row from '../components/Row'
 
 const PokemonRow = ({ id, pokemon }) => {
-  return (
-    <tr>
-      <td><img src={pokemon.info.img} /></td>
-      <td>{pokemon.info.name}</td>
-      <td>{pokemon.cp}</td>
-      <td>{pokemon.indAttack}</td>
-      <td>{pokemon.indDefense}</td>
-      <td>{pokemon.indStamina}</td>
-      <td>{pokemon.indAttack + pokemon.indDefense + pokemon.indStamina}</td>
-    </tr>
-  )
+  const sum = pokemon.indAttack + pokemon.indDefense + pokemon.indStamina
+  const cols = [
+    <img src={pokemon.info.img} />,
+    pokemon.info.name,
+    pokemon.cp,
+    pokemon.indAttack,
+    pokemon.indDefense,
+    pokemon.indStamina,
+    sum
+  ]
+  return <Row cols={cols} />
 }
 
 PokemonRow.propTypes = {

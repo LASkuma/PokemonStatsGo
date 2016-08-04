@@ -21,12 +21,6 @@ const getPokemonList = (username, password) => {
             return reject(err)
           }
 
-          pokeio.Heartbeat((err) => {
-            if (err) {
-              return reject(err)
-            }
-          })
-
           pokeio.GetInventory((err, inv) => {
             if (err) {
               return reject(err)
