@@ -21,37 +21,39 @@ const getPokemonList = (username, password) => {
             return reject(err)
           }
 
-          pokeio.GetInventory((err, inv) => {
-            if (err) {
-              return reject(err)
-            }
-            const pokemonList = inv.inventory_delta.inventory_items.reduce((prev, element) => {
-              const pokemon = element.inventory_item_data.pokemon
-              if (pokemon !== null && pokemon.pokemon_id !== null) {
-                const id = Buffer.from(pokemon.id.toString()).toString('base64')
-                const info = pokeio.pokemonlist[pokemon.pokemon_id - 1]
-                const indAttack = nullToZero(pokemon.individual_attack)
-                const indDefense = nullToZero(pokemon.individual_defense)
-                const indStamina = nullToZero(pokemon.individual_stamina)
-
-                const pokemonObject = {
-                  id,
-                  indAttack,
-                  indDefense,
-                  indStamina,
-                  info,
-                  cp: pokemon.cp,
-                  move1: pokemon.move_1,
-                  move2: pokemon.move_2,
-                  cpMultiplier: pokemon.cp_multiplier
-                }
-                prev[id] = pokemonObject
+          setTimeout(() => {
+            pokeio.GetInventory((err, inv) => {
+              if (err) {
+                return reject(err)
               }
-              return prev
-            }, {})
-            // console.log(util.inspect(pokemonList, { showHidden: false, depth: 10 }))
-            resolve(pokemonList)
-          })
+              const pokemonList = inv.inventory_delta.inventory_items.reduce((prev, element) => {
+                const pokemon = element.inventory_item_data.pokemon
+                if (pokemon !== null && pokemon.pokemon_id !== null) {
+                  const id = Buffer.from(pokemon.id.toString()).toString('base64')
+                  const info = pokeio.pokemonlist[pokemon.pokemon_id - 1]
+                  const indAttack = nullToZero(pokemon.individual_attack)
+                  const indDefense = nullToZero(pokemon.individual_defense)
+                  const indStamina = nullToZero(pokemon.individual_stamina)
+
+                  const pokemonObject = {
+                    id,
+                    indAttack,
+                    indDefense,
+                    indStamina,
+                    info,
+                    cp: pokemon.cp,
+                    move1: pokemon.move_1,
+                    move2: pokemon.move_2,
+                    cpMultiplier: pokemon.cp_multiplier
+                  }
+                  prev[id] = pokemonObject
+                }
+                return prev
+              }, {})
+              // console.log(util.inspect(pokemonList, { showHidden: false, depth: 10 }))
+              resolve(pokemonList)
+            })
+          }, 1000)
 
         })
 
