@@ -51,7 +51,7 @@
     "start:prod": "npm run clean && npm run build && cross-env NODE_ENV=production forever start -l forever.log -o out.log -e err.log ./build/server.js",
     "stop:prod": "forever stop ./build/server.js",
     "build": "webpack --config ./src/tools/webpack.client.prod.js && webpack --config ./src/tools/webpack.server.prod.js",
-    "clean": "rm -f *.log && rm -f ~/.forever/forever.log && rm -rf build"
+    "clean": "rm -f *.log && rm -f ~/.forever/forever.log && rm -rf build && rm -rf node_modules"
   },
   "repository": {
     "type": "git",
