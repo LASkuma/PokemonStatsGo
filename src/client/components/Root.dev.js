@@ -5,10 +5,11 @@ import DevTools from '../containers/DevTools'
 import routes from '../routes'
 
 const Root = ({ store, history }) => {
+  const { dispatch, getState } = store
   return (
     <Provider store={store}>
       <div>
-        <Router history={history} routes={routes} />
+        <Router history={history} routes={routes(dispatch, getState)} />
         <DevTools />
       </div>
     </Provider>

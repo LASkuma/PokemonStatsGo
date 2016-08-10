@@ -6,7 +6,7 @@ import morgan from 'morgan'
 import compression from 'compression'
 
 import renderFullPage from './utils/renderFullPage'
-import getPokemonList from './utils/getPokemonList'
+import { getPokemonList, getAccessToken } from './utils/PokemonGo'
 
 const __PROD__ = process.env.NODE_ENV === 'production'
 const __TEST__ = process.env.NODE_ENV === 'test'
@@ -48,10 +48,17 @@ if (__PROD__ || __TEST__) {
   }))
 }
 
-server.post('/stats', (req, res) => {
+server.post('/token', (req, res) => {
   const authCode = req.body.authCode
+  getAccessToken(authCode)
+    .then(token => res.status(200).send(token))
+    .catch(err => res.status(500).send({ errorCode: 500, message: 'Internal Server Error' }))
+})
 
-  getPokemonList(authCode)
+server.post('/stats', (req, res) => {
+  const accessToken = req.body.accessToken
+
+  getPokemonList(accessToken)
     .then((list) => {
       res.status(200).json(list)
     }, (err) => {

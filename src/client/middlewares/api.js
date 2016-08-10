@@ -60,14 +60,19 @@ export default (store) => (next) => (action) => {
     }
   }
 
-  return callApi(request).then(
-    (response) => next(actionWith({
-      response: response.data,
-      type: successType
-    })),
-    (error) => next(actionWith({
-      type: failureType,
-      error: error.data || 'Something bad happened'
-    }))
-  )
+  return callApi(request)
+    .then(response => {
+      next(actionWith({
+        response: response.data,
+        type: successType
+      }))
+      return response
+    })
+    .catch(error => {
+      next(actionWith({
+        type: failureType,
+        error: error.data || 'Something bad happened'
+      }))
+      throw error
+    })
 }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getStats } from '../actions'
+import { loginAndGetStats } from '../actions'
 
 class LoginPanel extends Component {
   handleSubmit (authCode) {
     return (e) => {
       e.preventDefault()
       const { dispatch } = this.props
-      dispatch(getStats(authCode))
+      dispatch(loginAndGetStats(authCode))
     }
   }
 
@@ -18,7 +18,7 @@ class LoginPanel extends Component {
           <img src='https://developers.google.com/identity/images/btn_google_signin_light_normal_web.png' alt='Sign in with Google' />
         </a>
         <form onSubmit={e => this.handleSubmit(this.authCode.value)(e)}>
-          <label for='auth_code'>Click "Sign in with Google" and copy your token</label>
+          <label htmlFor='auth_code'>Click "Sign in with Google" and copy your token</label>
           <br />
           <input id='auth_code' type='text' placeholder='Paste your token here' ref={node => { this.authCode = node }} />
           <input type='submit' value='Search' />
