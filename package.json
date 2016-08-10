@@ -11,7 +11,7 @@
     "express": "^4.14.0",
     "helmet": "^2.1.1",
     "morgan": "^1.7.0",
-    "pokemon-go-node-api": "git+https://github.com/Armax/Pokemon-GO-node-api.git",
+    "pokemon-go-node-api": "git+https://github.com/LASkuma/Pokemon-GO-node-api.git",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",

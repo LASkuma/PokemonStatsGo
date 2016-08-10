@@ -1,17 +1,21 @@
 import util from 'util'
 import PokemonGO from 'pokemon-go-node-api'
 
-const getPokemonList = (username, password) => {
+const getPokemonList = (authCode) => {
   const pokeio = new PokemonGO.Pokeio()
   const location = {
-    type: 'name',
-    name: 'Time Square'
+    type: 'coords',
+    coords: {
+      latitude: 40.758896,
+      longitude: -73.985130,
+      altitude: 0
+    }
   }
   const provider = 'google'
 
   return new Promise(
     (resolve, reject) => {
-      pokeio.init(username, password, location, provider, (err) => {
+      pokeio.initWithGoogleAuthCode(authCode, location, (err) => {
         if (err) {
           return reject(err)
         }

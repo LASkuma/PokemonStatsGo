@@ -49,10 +49,9 @@ if (__PROD__ || __TEST__) {
 }
 
 server.post('/stats', (req, res) => {
-  let username = req.body.username
-  let password = req.body.password
+  const authCode = req.body.authCode
 
-  getPokemonList(username, password)
+  getPokemonList(authCode)
     .then((list) => {
       res.status(200).json(list)
     }, (err) => {
