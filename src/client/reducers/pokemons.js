@@ -6,6 +6,10 @@ function list (state = {}, action) {
     return Object.assign({}, action.response)
   }
 
+  if (action.type === ActionTypes.LOGOUT) {
+    return {}
+  }
+
   return state
 }
 

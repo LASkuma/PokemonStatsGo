@@ -26,7 +26,7 @@ export default (store) => (next) => (action) => {
     return next(action)
   }
 
-  const { types, endpoint, method, body } = callAPI
+  const { types, endpoint, method, body, auth } = callAPI
 
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
@@ -54,7 +54,15 @@ export default (store) => (next) => (action) => {
   if (typeof method !== 'undefined') {
     if (method === 'POST') {
       request.method = 'POST'
-      request.body = body
+      request.body = body || {}
+      if (auth) {
+        const accessToken = store.getState().accessToken
+        if (accessToken) {
+          request.body.accessToken = accessToken
+        } else {
+          throw new Error('Require Login')
+        }
+      }
     } else {
       throw new Error('Unsupported method')
     }

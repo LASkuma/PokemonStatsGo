@@ -3,10 +3,17 @@ import * as ActionTypes from '../actions'
 import pokemons from './pokemons'
 
 function authenticated (state = false, action) {
-  if (action.type === ActionTypes.STATS_LOAD_SUCCESS) {
-    return true
+  switch (action.type) {
+    case ActionTypes.LOGIN_SUCCESS:
+    case ActionTypes.SET_ACCESS_TOKEN:
+      return true
+
+    case ActionTypes.LOGOUT:
+      return false
+
+    default:
+      return state
   }
-  return state
 }
 
 function pokemonInfo (state = {}, action) {
@@ -16,9 +23,19 @@ function pokemonInfo (state = {}, action) {
   return state
 }
 
+function accessToken (state = '', action) {
+  if (action.type === ActionTypes.SET_ACCESS_TOKEN) {
+    return action.payload
+  } else if (action.type === ActionTypes.LOGIN_SUCCESS) {
+    return action.response.id_token
+  }
+  return state
+}
+
 const rootReducer = combineReducers({
   authenticated,
   pokemonInfo,
+  accessToken,
   pokemons
 })
 

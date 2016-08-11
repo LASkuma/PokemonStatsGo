@@ -5,13 +5,13 @@ export const STATS_LOAD_REQUEST = 'STATS_LOAD_REQUEST'
 export const STATS_LOAD_SUCCESS = 'STATS_LOAD_SUCCESS'
 export const STATS_LOAD_FAILURE = 'STATS_LOAD_FAILURE'
 
-export function getStats (accessToken) {
+export function getStats () {
   return {
     [CALL_API]: {
       types: [STATS_LOAD_REQUEST, STATS_LOAD_SUCCESS, STATS_LOAD_FAILURE],
       endpoint: '/stats',
       method: 'POST',
-      body: { accessToken }
+      auth: true
     }
   }
 }
@@ -48,7 +48,7 @@ export function loginAndGetStats (authCode) {
         localStorage.setItem('tokens', JSON.stringify(tokens)) // eslint-disable-line
         return tokens
       })
-      .then(tokens => dispatch(getStats(tokens.id_token)))
+      .then(() => dispatch(getStats()))
       .catch(err => console.log(err))
   }
 }
@@ -58,14 +58,34 @@ export const TRANSFER_SUCCESS = 'TRANSFER_SUCCESS'
 export const TRANSFER_FAILURE = 'TRANSFER_FAILURE'
 
 export function transfer (id) {
-  const accessToken = getAccessToken()
   return {
     [CALL_API]: {
       types: [TRANSFER_REQUEST, TRANSFER_SUCCESS, TRANSFER_FAILURE],
       endpoint: 'transfer',
       method: 'POST',
-      body: { accessToken, id }
+      auth: true,
+      body: { id }
     }
+  }
+}
+
+export function authenticateWithTokens () {
+  return (dispatch, getStats) => {
+    const token = getAccessToken()
+    if (token) {
+      dispatch(setAccessToken(token))
+      return Promise.resolve(true)
+    }
+    return Promise.resolve(false)
+  }
+}
+
+export const SET_ACCESS_TOKEN = 'SET_ACCESS_TOKEN'
+
+function setAccessToken (token) {
+  return {
+    type: SET_ACCESS_TOKEN,
+    payload: token
   }
 }
 
@@ -79,4 +99,13 @@ function getAccessToken () {
     }
   }
   return undefined
+}
+
+export const LOGOUT = 'LOGOUT'
+
+export function logout () {
+  localStorage.removeItem('tokens') // eslint-disable-line
+  return {
+    type: LOGOUT
+  }
 }
