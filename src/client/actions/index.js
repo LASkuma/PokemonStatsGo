@@ -52,3 +52,31 @@ export function loginAndGetStats (authCode) {
       .catch(err => console.log(err))
   }
 }
+
+export const TRANSFER_REQUEST = 'TRANSFER_REQUEST'
+export const TRANSFER_SUCCESS = 'TRANSFER_SUCCESS'
+export const TRANSFER_FAILURE = 'TRANSFER_FAILURE'
+
+export function transfer (id) {
+  const accessToken = getAccessToken()
+  return {
+    [CALL_API]: {
+      types: [TRANSFER_REQUEST, TRANSFER_SUCCESS, TRANSFER_FAILURE],
+      endpoint: 'transfer',
+      method: 'POST',
+      body: { accessToken, id }
+    }
+  }
+}
+
+function getAccessToken () {
+  let tokens = localStorage.getItem('tokens') // eslint-disable-line
+  if (tokens) {
+    tokens = JSON.parse(tokens)
+    const now = new Date().getTime()
+    if (tokens.expiry_date - now > 5000) {
+      return tokens.id_token
+    }
+  }
+  return undefined
+}

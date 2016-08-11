@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Row from '../components/Row'
+import TransferButton from './TransferButton'
 
 const PokemonRow = ({ id, pokemon }) => {
   const sum = pokemon.indAttack + pokemon.indDefense + pokemon.indStamina
@@ -11,7 +12,8 @@ const PokemonRow = ({ id, pokemon }) => {
     pokemon.indAttack,
     pokemon.indDefense,
     pokemon.indStamina,
-    sum
+    sum,
+    <TransferButton id={id} />
   ]
   return <Row cols={cols} />
 }

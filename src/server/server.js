@@ -1,12 +1,13 @@
 import path from 'path'
 import express from 'express'
+import Long from 'long'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
 import compression from 'compression'
 
 import renderFullPage from './utils/renderFullPage'
-import { getPokemonList, getAccessToken } from './utils/PokemonGo'
+import { getPokemonList, getAccessToken, transferPokemon } from './utils/PokemonGo'
 
 const __PROD__ = process.env.NODE_ENV === 'production'
 const __TEST__ = process.env.NODE_ENV === 'test'
@@ -67,6 +68,22 @@ server.post('/stats', (req, res) => {
       }
       console.log(err)
       res.status(500).send({ errorCode: 500, message: 'Internal Server Error' })
+    })
+})
+
+server.post('/transfer', (req, res) => {
+  const accessToken = req.body.accessToken
+
+  const id = Long.fromString(req.body.id, true, 16)
+  console.log(id)
+  transferPokemon(accessToken, id)
+    .then(result => {
+      console.log(result)
+      res.status(200).end()
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).end()
     })
 })
 

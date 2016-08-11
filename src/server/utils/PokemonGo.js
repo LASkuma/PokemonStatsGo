@@ -11,66 +11,52 @@ const location = {
 }
 
 export function getPokemonList (accessToken) {
-  const pokeio = new PokemonGO.Pokeio()
+  return loginWithAccessToken(accessToken)
+    .then(trainer => _getPokemonList(trainer))
+}
 
-  pokeio.playerInfo.initTime = new Date().getTime()
-  pokeio.playerInfo.provider = 'google'
-  pokeio.playerInfo.accessToken = accessToken
-
+function _getPokemonList (trainer) {
   return new Promise(
     (resolve, reject) => {
-      pokeio.SetLocation(location, (err) => {
-        if (err) {
-          return reject(err)
-        }
-
-        pokeio.GetApiEndpoint((err, api_endpoint) => {
+      setTimeout(() => {
+        trainer.GetInventory((err, inv) => {
           if (err) {
             return reject(err)
           }
+          const pokemonList = inv.inventory_delta.inventory_items.reduce((prev, element) => {
+            const pokemon = element.inventory_item_data.pokemon
+            if (pokemon !== null && pokemon.pokemon_id !== null) {
+              // const id = Buffer.from(pokemon.id.toString()).toString('hex')
+              let b = Buffer.alloc(8)
+              b.writeInt32BE(pokemon.id.high, 0);
+              b.writeInt32BE(pokemon.id.low, 4);
+              const id = b.toString('hex');
 
-          pokeio.GetProfile((err) => {
-            if (err) {
-              return reject(err)
+              const info = trainer.pokemonlist[pokemon.pokemon_id - 1]
+              const indAttack = nullToZero(pokemon.individual_attack)
+              const indDefense = nullToZero(pokemon.individual_defense)
+              const indStamina = nullToZero(pokemon.individual_stamina)
+
+              const pokemonObject = {
+                id,
+                indAttack,
+                indDefense,
+                indStamina,
+                info,
+                cp: pokemon.cp,
+                move1: pokemon.move_1,
+                move2: pokemon.move_2,
+                cpMultiplier: pokemon.cp_multiplier
+              }
+              prev[id] = pokemonObject
             }
-
-            setTimeout(() => {
-              pokeio.GetInventory((err, inv) => {
-                if (err) {
-                  return reject(err)
-                }
-                const pokemonList = inv.inventory_delta.inventory_items.reduce((prev, element) => {
-                  const pokemon = element.inventory_item_data.pokemon
-                  if (pokemon !== null && pokemon.pokemon_id !== null) {
-                    const id = Buffer.from(pokemon.id.toString()).toString('base64')
-                    const info = pokeio.pokemonlist[pokemon.pokemon_id - 1]
-                    const indAttack = nullToZero(pokemon.individual_attack)
-                    const indDefense = nullToZero(pokemon.individual_defense)
-                    const indStamina = nullToZero(pokemon.individual_stamina)
-
-                    const pokemonObject = {
-                      id,
-                      indAttack,
-                      indDefense,
-                      indStamina,
-                      info,
-                      cp: pokemon.cp,
-                      move1: pokemon.move_1,
-                      move2: pokemon.move_2,
-                      cpMultiplier: pokemon.cp_multiplier
-                    }
-                    prev[id] = pokemonObject
-                  }
-                  return prev
-                }, {})
-                // console.log(util.inspect(pokemonList, { showHidden: false, depth: 10 }))
-                resolve(pokemonList)
-              })
-            }, 1000)
-
-          })
+            return prev
+          }, {})
+          // console.log(util.inspect(pokemonList, { showHidden: false, depth: 10 }))
+          resolve(pokemonList)
         })
-      })
+      }, 1000)
+
     }
   )
 }
@@ -100,6 +86,59 @@ export function getAccessToken (authCode) {
             return reject(err)
           }
           resolve(token)
+        })
+      })
+    }
+  )
+}
+
+export function transferPokemon (accessToken, id) {
+  return loginWithAccessToken(accessToken)
+    .then(trainer => _transferPokemon(trainer, id))
+}
+
+function _transferPokemon (trainer, id) {
+  return new Promise(
+    (resolve, reject) => {
+      setTimeout(() => {
+        trainer.TransferPokemon(id, (err, result) => {
+          if (err) {
+            return reject(err)
+          }
+
+          resolve(result)
+        })
+      }, 1000)
+    }
+  )
+}
+
+function loginWithAccessToken (accessToken) {
+  const pokeio = new PokemonGO.Pokeio()
+
+  pokeio.playerInfo.initTime = new Date().getTime()
+  pokeio.playerInfo.provider = 'google'
+  pokeio.playerInfo.accessToken = accessToken
+
+  return new Promise(
+    (resolve, reject) => {
+      pokeio.SetLocation(location, (err) => {
+        if (err) {
+          return reject(err)
+        }
+
+        pokeio.GetApiEndpoint((err, api_endpoint) => {
+          if (err) {
+            return reject(err)
+          }
+
+          pokeio.GetProfile((err) => {
+            if (err) {
+              return reject(err)
+            }
+
+            resolve(pokeio)
+          })
         })
       })
     }
